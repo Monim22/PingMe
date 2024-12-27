@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5173",  // Ensure this is the correct URL for your frontend
     credentials: true,
   })
 );
@@ -28,11 +28,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  // Serve static files from the frontend build directory
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  // Serve static files from the frontend folder (not dist)
+  app.use(express.static(path.join(__dirname, "../frontend")));
 
+  // Serve the index.html directly from the frontend folder
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend", "index.html"));
   });
 }
 
